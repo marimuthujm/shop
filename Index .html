@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html ng-app="ecommerceApp">
+<head>
+    <title>Ecommerce App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #343a40;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 2px solid #ff7e5f;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px;
+            transition: color 0.3s, background-color 0.3s;
+            border-radius: 5px;
+        }
+        .nav a:hover {
+            color: #000;
+            background-color: #ffc107;
+        }
+        
+        .products {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 40px;
+    }
+    .product {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        background-color: #fff;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .product:hover {
+        transform: scale(1.05);
+        background-color: #ffeeba; /* Light yellow background */
+        box-shadow: 0 8px 16px rgba(255, 215, 0, 0.2); /* Golden shadow */
+    }
+    .product img {
+        max-width: 100%;
+        height: 150px; /* Fixed height for images */
+        object-fit: contain; /* Maintain aspect ratio */
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+    .product .details {
+        margin-bottom: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .product .details h3 {
+        margin-bottom: 10px;
+    }
+    .product .details p {
+        font-size: 1.2em;
+        color: #ff7e5f; /* Updated text color */
+    }
+    .product .actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    .product input {
+        width: 50px;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    .product button {
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .product .add-to-cart {
+        background-color: #ffc107;
+        color: #fff;
+    }
+    .product .add-to-cart:hover {
+        background-color: #e0a800;
+    }
+    .product .buy-now {
+        background-color: #28a745;
+        color: #fff;
+    }
+    .product .buy-now:hover {
+        background-color: #218838;
+    }
+
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .cart-item:hover {
+            background-color: #e9ecef;
+            box-shadow: 0 8px 16px rgba(255, 69, 0, 0.2);
+        }
+        .cart-item .item-details {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cart-item button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cart-item button:hover {
+            background-color: #c82333;
+        }
+        .cart-item .buy-now {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .cart-item .buy-now:hover {
+            background-color: #218838;
+        }
+        h2 {
+            color: #ff7e5f;
+            border-bottom: 2px solid #ff7e5f;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .contact-info {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .decorative-image {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            opacity: 0.5;
+        }
+        .toast {
+            visibility: hidden;
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body ng-controller="MainController">
+    <header>
+        <div class="logo">
+            <img src="./Assests/logo.png" alt="Logo">
+            <h1>SRI  SHOP</h1>
+        </div>
+        <nav class="nav">
+            <a href="#" ng-click="setSection('products')">Products</a>
+            <a href="#" ng-click="setSection('cart')">Cart</a>
+            <a href="#" ng-click="setSection('contact')">Contact Us</a>
+        </nav>
+    </header>
+    <div class="container">
+        <section id="products" ng-show="currentSection === 'products'">
+            <h2>Products</h2>
+            <div class="category-dropdown">
+                <label for="category">Filter by Category:</label>
+                <select id="category" ng-model="selectedCategory" ng-change="filterProducts()">
+                    <option value="">All</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="toys">Toys</option>
+                    <option value="dress">Dress</option>
+                    <option value="laptops">Laptops</option>
+                </select>
+            </div>
+            <div class="products">
+                <div class="product" ng-repeat="product in filteredProducts">
+                    <img ng-src="{{ product.imageUrl }}" alt="{{ product.name }}">
+                    <div class="details">
+                        <h3>{{ product.name }}</h3>
+                        <p>&#8377;{{ product.price }}</p>
+                    </div>
+                    <div class="actions">
+                        <input type="number" ng-model="product.quantity" min="1" value="1" />
+                        <button class="add-to-cart" ng-click="addToCart(product)">Add to Cart</button>
+                        <button class="buy-now" ng-click="buyNow(product)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="cart" ng-show="currentSection === 'cart'">
+            <h2>Your Cart</h2>
+            <div class="cart-item" ng-repeat="item in cart track by $index">
+                <div class="item-details">
+                    <h3>{{ item.name }}</h3>
+                    <p>&#8377;{{ item.price }} x {{ item.quantity }}</p>
+                </div>
+                <div class="item-actions">
+                    <button ng-click="removeFromCart(item)">Remove</button>
+                    <button class="buy-now" ng-click="buyNow(item)">Buy Now</button>
+                </div>
+            </div>
+            <p>Total: &#8377;{{ getTotal() }}</p>
+        </section>
+        <section id="contact" ng-show="currentSection === 'contact'">
+            <h2>Contact Us</h2>
+            <div class="contact-info">
+                <p>Email: support@stormcreek.com</p>
+                <p>Phone: +91-9876543210</p>
+            </div>
+        </section>
+    </div>
+    <div class="toast" id="toast">{{ toastMessage }}</div>
+    <script>
+        var app = angular.module('ecommerceApp', []);
+        app.controller('MainController', function($scope) {
+            $scope.currentSection = 'products'; // Default section
+
+            $scope.setSection = function(section) {
+                $scope.currentSection = section;
+            };
+
+            $scope.products = [
+                { name: 'Oppo', price: 10000, imageUrl: './Assests/oppo.jpeg', quantity: 1, category: 'mobile' },
+                { name: 'Samsung', price: 20000, imageUrl: './Assests/sam.jpeg', quantity: 1, category: 'mobile' },
+                { name: 'Nokia', price: 6000, imageUrl: './Assests/nokia.jpeg', quantity: 1, category: 'mobile' },
+                { name: 'Toy Car', price: 500, imageUrl: './Assests/car.jpeg', quantity: 1, category: 'toys' },
+                { name: 'Doll', price: 300, imageUrl: './Assests/doll.jpeg', quantity: 1, category: 'toys' },
+                { name: 'T-Shirt', price: 800, imageUrl: './Assests/tshirt.jpg', quantity: 1, category: 'dress' },
+                { name: 'Jeans', price: 1500, imageUrl: './Assests/jeans.jpg', quantity: 1, category: 'dress' },
+                { name: 'Dell Laptop', price: 50000, imageUrl: './Assests/dell.jpeg', quantity: 1, category: 'laptops' },
+                { name: 'HP Laptop', price: 45000, imageUrl: './Assests/hp.jpeg', quantity: 1, category: 'laptops' }
+            ];
+
+            $scope.filteredProducts = $scope.products;
+
+            $scope.filterProducts = function() {
+                if ($scope.selectedCategory) {
+                    $scope.filteredProducts = $scope.products.filter(product => product.category === $scope.selectedCategory);
+                } else {
+                    $scope.filteredProducts = $scope.products;
+                }
+            };
+
+            $scope.cart = [];
+            $scope.addToCart = function(product) {
+                let existingProduct = $scope.cart.find(item => item.name === product.name);
+                if (existingProduct) {
+                    existingProduct.quantity += parseInt(product.quantity);
+                } else {
+                    $scope.cart.push({ ...product, quantity: parseInt(product.quantity) });
+                }
+                product.quantity = 1;
+                $scope.showToast('Added to Cart: ' + product.name);
+            };
+            $scope.removeFromCart = function(item) {
+                if (item.quantity > 1) {
+                    item.quantity -= 1;
+                } else {
+                    const index = $scope.cart.indexOf(item);
+                    if (index > -1) {
+                        $scope.cart.splice(index, 1);
+                    }
+                }
+                $scope.showToast('Removed from Cart: ' + item.name);
+            };
+            $scope.buyNow = function(product) {
+                $scope.showToast('Buy Now  for: ' + product.name);
+                // Implement the buy now functionality here
+            };
+            $scope.getTotal = function() {
+                return $scope.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            };
+
+            $scope.showToast = function(message) {
+                $scope.toastMessage = message;
+                var toast = document.getElementById('toast');
+                toast.className = 'toast show';
+                setTimeout(function() {
+                    toast.className = toast.className.replace('show', '');
+                }, 3000);
+            };
+        });
+    </script>
+</body>
+</html>
